@@ -5,3 +5,4 @@ export * from './persona.repository';
 export * from './tipoanimal.repository';
 export * from './mascota.repository';
 export * from './veterinaria.repository';
+export * from './medico.repository';
