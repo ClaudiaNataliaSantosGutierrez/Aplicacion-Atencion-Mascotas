@@ -62,6 +62,11 @@ export class Visitas extends Entity {
   })
   medicoId?: string;
 
+  @property({
+    type: 'string',
+  })
+  mascotaId?: string;
+
   constructor(data?: Partial<Visitas>) {
     super(data);
   }

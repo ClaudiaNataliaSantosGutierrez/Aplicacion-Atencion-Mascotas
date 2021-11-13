@@ -9,3 +9,8 @@ export * from './medico-solicitud.controller';
 export * from './medico-visitas.controller';
 export * from './solicitud.controller';
 export * from './visitas.controller';
+export * from './mascota-visitas.controller';
+export * from './mascota-solicitud.controller';
+export * from './mascota.controller';
+export * from './veterinaria-medico.controller';
+export * from './veterinaria.controller';

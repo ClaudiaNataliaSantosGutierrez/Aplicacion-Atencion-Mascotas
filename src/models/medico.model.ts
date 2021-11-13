@@ -41,6 +41,11 @@ export class Medico extends Entity {
   @hasMany(() => Visitas)
   visitas: Visitas[];
 
+  @property({
+    type: 'string',
+  })
+  veterinariaId?: string;
+
   constructor(data?: Partial<Medico>) {
     super(data);
   }

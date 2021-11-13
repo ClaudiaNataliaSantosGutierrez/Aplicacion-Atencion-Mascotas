@@ -48,6 +48,11 @@ export class Solicitud extends Entity {
   })
   medicoId?: string;
 
+  @property({
+    type: 'string',
+  })
+  mascotaId?: string;
+
   constructor(data?: Partial<Solicitud>) {
     super(data);
   }
