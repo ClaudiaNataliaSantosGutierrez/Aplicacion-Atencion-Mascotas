@@ -43,6 +43,11 @@ export class Solicitud extends Entity {
   @belongsTo(() => Propietario)
   propietarioId: string;
 
+  @property({
+    type: 'string',
+  })
+  medicoId?: string;
+
   constructor(data?: Partial<Solicitud>) {
     super(data);
   }

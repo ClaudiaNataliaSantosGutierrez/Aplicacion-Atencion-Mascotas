@@ -5,3 +5,7 @@ export * from './mascota-propietario.controller';
 export * from './propietario-mascota.controller';
 export * from './persona.controller';
 export * from './propietario.controller';
+export * from './medico-solicitud.controller';
+export * from './medico-visitas.controller';
+export * from './solicitud.controller';
+export * from './visitas.controller';
