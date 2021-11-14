@@ -14,3 +14,4 @@ export * from './mascota-solicitud.controller';
 export * from './mascota.controller';
 export * from './veterinaria-medico.controller';
 export * from './veterinaria.controller';
+export * from './medico.controller';

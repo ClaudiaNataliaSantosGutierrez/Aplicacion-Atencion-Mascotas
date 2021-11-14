@@ -1,4 +1,4 @@
-import {Entity, model, property, hasMany} from '@loopback/repository';
+import {Entity, model, property, hasMany, hasOne} from '@loopback/repository';
 import {Solicitud} from './solicitud.model';
 import {Visitas} from './visitas.model';
 
@@ -45,6 +45,9 @@ export class Medico extends Entity {
     type: 'string',
   })
   veterinariaId?: string;
+
+  @hasOne(() => Solicitud)
+  solicitud: Solicitud;
 
   constructor(data?: Partial<Medico>) {
     super(data);
