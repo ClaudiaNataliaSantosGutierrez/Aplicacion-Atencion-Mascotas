@@ -16,20 +16,20 @@ import {
   requestBody,
 } from '@loopback/rest';
 import {
-  Medico,
+  Persona,
   Solicitud,
 } from '../models';
-import {MedicoRepository} from '../repositories';
+import {PersonaRepository} from '../repositories';
 
-export class MedicoSolicitudController {
+export class PersonaSolicitudController {
   constructor(
-    @repository(MedicoRepository) protected medicoRepository: MedicoRepository,
+    @repository(PersonaRepository) protected personaRepository: PersonaRepository,
   ) { }
 
-  @get('/medicos/{id}/solicituds', {
+  @get('/personas/{id}/solicituds', {
     responses: {
       '200': {
-        description: 'Array of Medico has many Solicitud',
+        description: 'Array of Persona has many Solicitud',
         content: {
           'application/json': {
             schema: {type: 'array', items: getModelSchemaRef(Solicitud)},
@@ -42,38 +42,38 @@ export class MedicoSolicitudController {
     @param.path.string('id') id: string,
     @param.query.object('filter') filter?: Filter<Solicitud>,
   ): Promise<Solicitud[]> {
-    return this.medicoRepository.solicitudes(id).find(filter);
+    return this.personaRepository.solicitudes(id).find(filter);
   }
 
-  @post('/medicos/{id}/solicituds', {
+  @post('/personas/{id}/solicituds', {
     responses: {
       '200': {
-        description: 'Medico model instance',
+        description: 'Persona model instance',
         content: {'application/json': {schema: getModelSchemaRef(Solicitud)}},
       },
     },
   })
   async create(
-    @param.path.string('id') id: typeof Medico.prototype.id,
+    @param.path.string('id') id: typeof Persona.prototype.id,
     @requestBody({
       content: {
         'application/json': {
           schema: getModelSchemaRef(Solicitud, {
-            title: 'NewSolicitudInMedico',
+            title: 'NewSolicitudInPersona',
             exclude: ['id'],
-            optional: ['medicoId']
+            optional: ['personaId']
           }),
         },
       },
     }) solicitud: Omit<Solicitud, 'id'>,
   ): Promise<Solicitud> {
-    return this.medicoRepository.solicitudes(id).create(solicitud);
+    return this.personaRepository.solicitudes(id).create(solicitud);
   }
 
-  @patch('/medicos/{id}/solicituds', {
+  @patch('/personas/{id}/solicituds', {
     responses: {
       '200': {
-        description: 'Medico.Solicitud PATCH success count',
+        description: 'Persona.Solicitud PATCH success count',
         content: {'application/json': {schema: CountSchema}},
       },
     },
@@ -90,13 +90,13 @@ export class MedicoSolicitudController {
     solicitud: Partial<Solicitud>,
     @param.query.object('where', getWhereSchemaFor(Solicitud)) where?: Where<Solicitud>,
   ): Promise<Count> {
-    return this.medicoRepository.solicitudes(id).patch(solicitud, where);
+    return this.personaRepository.solicitudes(id).patch(solicitud, where);
   }
 
-  @del('/medicos/{id}/solicituds', {
+  @del('/personas/{id}/solicituds', {
     responses: {
       '200': {
-        description: 'Medico.Solicitud DELETE success count',
+        description: 'Persona.Solicitud DELETE success count',
         content: {'application/json': {schema: CountSchema}},
       },
     },
@@ -105,6 +105,6 @@ export class MedicoSolicitudController {
     @param.path.string('id') id: string,
     @param.query.object('where', getWhereSchemaFor(Solicitud)) where?: Where<Solicitud>,
   ): Promise<Count> {
-    return this.medicoRepository.solicitudes(id).delete(where);
+    return this.personaRepository.solicitudes(id).delete(where);
   }
 }

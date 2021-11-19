@@ -1,5 +1,8 @@
-import {Entity, model, property, belongsTo} from '@loopback/repository';
-import {Propietario} from './propietario.model';
+import {Entity, model, property, belongsTo, hasMany} from '@loopback/repository';
+import {Persona} from './persona.model';
+import {Veterinario} from './veterinario.model';
+import {Mascota} from './mascota.model';
+import {Visita} from './visita.model';
 
 @model()
 export class Solicitud extends Entity {
@@ -11,47 +14,28 @@ export class Solicitud extends Entity {
   id?: string;
 
   @property({
-    type: 'string',
-    required: true,
-  })
-  nombre_propietario: string;
-
-  @property({
-    type: 'string',
-    required: true,
-  })
-  identificacion: string;
-
-  @property({
-    type: 'string',
-    required: true,
-  })
-  tipo_animal: string;
-
-  @property({
     type: 'date',
     required: true,
   })
-  fecha_atencion: string;
+  fecha: string;
 
   @property({
     type: 'string',
     required: true,
   })
-  id_medico: string;
+  detalle: string;
 
-  @belongsTo(() => Propietario)
-  propietarioId: string;
+  @belongsTo(() => Persona)
+  personaId: string;
 
-  @property({
-    type: 'string',
-  })
-  medicoId?: string;
+  @belongsTo(() => Veterinario)
+  veterinarioId: string;
 
-  @property({
-    type: 'string',
-  })
-  mascotaId?: string;
+  @belongsTo(() => Mascota)
+  mascotaId: string;
+
+  @hasMany(() => Visita)
+  visitas: Visita[];
 
   constructor(data?: Partial<Solicitud>) {
     super(data);

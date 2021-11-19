@@ -1,8 +1,8 @@
 import {inject, Getter} from '@loopback/core';
 import {DefaultCrudRepository, repository, HasManyRepositoryFactory} from '@loopback/repository';
 import {MongobdDataSource} from '../datasources';
-import {Veterinaria, VeterinariaRelations, Medico} from '../models';
-import {MedicoRepository} from './medico.repository';
+import {Veterinaria, VeterinariaRelations, Veterinario} from '../models';
+import {VeterinarioRepository} from './veterinario.repository';
 
 export class VeterinariaRepository extends DefaultCrudRepository<
   Veterinaria,
@@ -10,13 +10,13 @@ export class VeterinariaRepository extends DefaultCrudRepository<
   VeterinariaRelations
 > {
 
-  public readonly medicos: HasManyRepositoryFactory<Medico, typeof Veterinaria.prototype.id>;
+  public readonly veterinarios: HasManyRepositoryFactory<Veterinario, typeof Veterinaria.prototype.id>;
 
   constructor(
-    @inject('datasources.mongobd') dataSource: MongobdDataSource, @repository.getter('MedicoRepository') protected medicoRepositoryGetter: Getter<MedicoRepository>,
+    @inject('datasources.mongobd') dataSource: MongobdDataSource, @repository.getter('VeterinarioRepository') protected veterinarioRepositoryGetter: Getter<VeterinarioRepository>,
   ) {
     super(Veterinaria, dataSource);
-    this.medicos = this.createHasManyRepositoryFactoryFor('medicos', medicoRepositoryGetter,);
-    this.registerInclusionResolver('medicos', this.medicos.inclusionResolver);
+    this.veterinarios = this.createHasManyRepositoryFactoryFor('veterinarios', veterinarioRepositoryGetter,);
+    this.registerInclusionResolver('veterinarios', this.veterinarios.inclusionResolver);
   }
 }

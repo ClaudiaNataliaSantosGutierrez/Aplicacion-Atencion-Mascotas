@@ -1,8 +1,9 @@
 import {Entity, model, property, belongsTo} from '@loopback/repository';
-import {Persona} from './persona.model';
+import {Veterinario} from './veterinario.model';
+import {Solicitud} from './solicitud.model';
 
 @model()
-export class Mascota extends Entity {
+export class Visita extends Entity {
   @property({
     type: 'string',
     id: true,
@@ -11,57 +12,66 @@ export class Mascota extends Entity {
   id?: string;
 
   @property({
-    type: 'string',
-    required: true,
-  })
-  nombre: string;
-
-  @property({
-    type: 'string',
-    required: true,
-  })
-  tipo: string;
-
-  @property({
-    type: 'string',
-    required: true,
-  })
-  raza: string;
-
-  @property({
-    type: 'string',
-    required: true,
-  })
-  colorPelaje: string;
-
-  @property({
-    type: 'string',
-    required: true,
-  })
-  colorOjos: string;
-
-  @property({
-    type: 'string',
-    required: true,
-  })
-  estatura: string;
-
-  @property({
     type: 'date',
     required: true,
   })
-  fechaNacimiento: string;
+  fecha: string;
 
-  @belongsTo(() => Persona)
-  personaId: string;
+  @property({
+    type: 'string',
+    required: true,
+  })
+  temperatura: string;
 
-  constructor(data?: Partial<Mascota>) {
+  @property({
+    type: 'string',
+    required: true,
+  })
+  peso: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  frecCardiaca: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  frecRespiratoria: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  estado: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  observaciones: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  medicinas: string;
+
+  @belongsTo(() => Veterinario)
+  veterinarioId: string;
+
+  @belongsTo(() => Solicitud)
+  solicitudId: string;
+
+  constructor(data?: Partial<Visita>) {
     super(data);
   }
 }
 
-export interface MascotaRelations {
+export interface VisitaRelations {
   // describe navigational properties here
 }
 
-export type MascotaWithRelations = Mascota & MascotaRelations;
+export type VisitaWithRelations = Visita & VisitaRelations;

@@ -1,29 +1,29 @@
+import {service} from '@loopback/core';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
+import {Llaves} from '../config/llaves';
 import {Persona} from '../models';
 import {PersonaRepository} from '../repositories';
+import {AutenticacionService} from '../services';
+const fetch = require('node-fetch');
 
 export class PersonaController {
   constructor(
     @repository(PersonaRepository)
     public personaRepository : PersonaRepository,
+    @service(AutenticacionService)
+    public servicioAutenticacion: AutenticacionService,
   ) {}
 
   @post('/personas')
@@ -44,7 +44,29 @@ export class PersonaController {
     })
     persona: Omit<Persona, 'id'>,
   ): Promise<Persona> {
-    return this.personaRepository.create(persona);
+    // Vamos a modificar el retorno de esta funcion de creacion persona par que envie
+    // un correo de confirmacion al usuario
+    const clave = this.servicioAutenticacion.GenerarClave();
+    const claveCifrada = this.servicioAutenticacion.CifrarClave(clave);
+    persona.clave = claveCifrada;
+    //Await para que espere un proceso anterior
+    const p = await this.personaRepository.create(persona);
+
+    //Ahora a notificar al usuario via correo electronico
+    const email = persona.correo;
+    const asunto = "PetWeb -- Registro de Usuario Completado!";
+    const mensaje = `Hola ${persona.nombres}, su nombre de usuario es: ${persona.correo} y su contraseña es: ${clave}, perfil de Usuario.`;
+    fetch(`${Llaves.urlServicioNotificaciones}/mail?email=${email}&asunto=${asunto}&mensaje=${mensaje}`)
+    .then((data:any) => {
+      console.log(data);
+    })
+    //Envío de confirmacion por sms
+    const celular = persona.celular;
+    fetch(`${Llaves.urlServicioNotificaciones}/sms?mensaje=${mensaje}&telefono=${celular}`)
+    .then((data:any) => {
+      console.log(data);
+    })
+    return p;
   }
 
   @get('/personas/count')

@@ -17,22 +17,22 @@ import {
 } from '@loopback/rest';
 import {
   Veterinaria,
-  Medico,
+  Veterinario,
 } from '../models';
 import {VeterinariaRepository} from '../repositories';
 
-export class VeterinariaMedicoController {
+export class VeterinariaVeterinarioController {
   constructor(
     @repository(VeterinariaRepository) protected veterinariaRepository: VeterinariaRepository,
   ) { }
 
-  @get('/veterinarias/{id}/medicos', {
+  @get('/veterinarias/{id}/veterinarios', {
     responses: {
       '200': {
-        description: 'Array of Veterinaria has many Medico',
+        description: 'Array of Veterinaria has many Veterinario',
         content: {
           'application/json': {
-            schema: {type: 'array', items: getModelSchemaRef(Medico)},
+            schema: {type: 'array', items: getModelSchemaRef(Veterinario)},
           },
         },
       },
@@ -40,16 +40,16 @@ export class VeterinariaMedicoController {
   })
   async find(
     @param.path.string('id') id: string,
-    @param.query.object('filter') filter?: Filter<Medico>,
-  ): Promise<Medico[]> {
-    return this.veterinariaRepository.medicos(id).find(filter);
+    @param.query.object('filter') filter?: Filter<Veterinario>,
+  ): Promise<Veterinario[]> {
+    return this.veterinariaRepository.veterinarios(id).find(filter);
   }
 
-  @post('/veterinarias/{id}/medicos', {
+  @post('/veterinarias/{id}/veterinarios', {
     responses: {
       '200': {
         description: 'Veterinaria model instance',
-        content: {'application/json': {schema: getModelSchemaRef(Medico)}},
+        content: {'application/json': {schema: getModelSchemaRef(Veterinario)}},
       },
     },
   })
@@ -58,22 +58,22 @@ export class VeterinariaMedicoController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Medico, {
-            title: 'NewMedicoInVeterinaria',
+          schema: getModelSchemaRef(Veterinario, {
+            title: 'NewVeterinarioInVeterinaria',
             exclude: ['id'],
             optional: ['veterinariaId']
           }),
         },
       },
-    }) medico: Omit<Medico, 'id'>,
-  ): Promise<Medico> {
-    return this.veterinariaRepository.medicos(id).create(medico);
+    }) veterinario: Omit<Veterinario, 'id'>,
+  ): Promise<Veterinario> {
+    return this.veterinariaRepository.veterinarios(id).create(veterinario);
   }
 
-  @patch('/veterinarias/{id}/medicos', {
+  @patch('/veterinarias/{id}/veterinarios', {
     responses: {
       '200': {
-        description: 'Veterinaria.Medico PATCH success count',
+        description: 'Veterinaria.Veterinario PATCH success count',
         content: {'application/json': {schema: CountSchema}},
       },
     },
@@ -83,28 +83,28 @@ export class VeterinariaMedicoController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Medico, {partial: true}),
+          schema: getModelSchemaRef(Veterinario, {partial: true}),
         },
       },
     })
-    medico: Partial<Medico>,
-    @param.query.object('where', getWhereSchemaFor(Medico)) where?: Where<Medico>,
+    veterinario: Partial<Veterinario>,
+    @param.query.object('where', getWhereSchemaFor(Veterinario)) where?: Where<Veterinario>,
   ): Promise<Count> {
-    return this.veterinariaRepository.medicos(id).patch(medico, where);
+    return this.veterinariaRepository.veterinarios(id).patch(veterinario, where);
   }
 
-  @del('/veterinarias/{id}/medicos', {
+  @del('/veterinarias/{id}/veterinarios', {
     responses: {
       '200': {
-        description: 'Veterinaria.Medico DELETE success count',
+        description: 'Veterinaria.Veterinario DELETE success count',
         content: {'application/json': {schema: CountSchema}},
       },
     },
   })
   async delete(
     @param.path.string('id') id: string,
-    @param.query.object('where', getWhereSchemaFor(Medico)) where?: Where<Medico>,
+    @param.query.object('where', getWhereSchemaFor(Veterinario)) where?: Where<Veterinario>,
   ): Promise<Count> {
-    return this.veterinariaRepository.medicos(id).delete(where);
+    return this.veterinariaRepository.veterinarios(id).delete(where);
   }
 }

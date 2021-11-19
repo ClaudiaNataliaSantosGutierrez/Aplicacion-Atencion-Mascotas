@@ -16,20 +16,20 @@ import {
   requestBody,
 } from '@loopback/rest';
 import {
-  Propietario,
+  Persona,
   Mascota,
 } from '../models';
-import {PropietarioRepository} from '../repositories';
+import {PersonaRepository} from '../repositories';
 
-export class PropietarioMascotaController {
+export class PersonaMascotaController {
   constructor(
-    @repository(PropietarioRepository) protected propietarioRepository: PropietarioRepository,
+    @repository(PersonaRepository) protected personaRepository: PersonaRepository,
   ) { }
 
-  @get('/propietarios/{id}/mascotas', {
+  @get('/personas/{id}/mascotas', {
     responses: {
       '200': {
-        description: 'Array of Propietario has many Mascota',
+        description: 'Array of Persona has many Mascota',
         content: {
           'application/json': {
             schema: {type: 'array', items: getModelSchemaRef(Mascota)},
@@ -42,38 +42,38 @@ export class PropietarioMascotaController {
     @param.path.string('id') id: string,
     @param.query.object('filter') filter?: Filter<Mascota>,
   ): Promise<Mascota[]> {
-    return this.propietarioRepository.mascotas(id).find(filter);
+    return this.personaRepository.mascotas(id).find(filter);
   }
 
-  @post('/propietarios/{id}/mascotas', {
+  @post('/personas/{id}/mascotas', {
     responses: {
       '200': {
-        description: 'Propietario model instance',
+        description: 'Persona model instance',
         content: {'application/json': {schema: getModelSchemaRef(Mascota)}},
       },
     },
   })
   async create(
-    @param.path.string('id') id: typeof Propietario.prototype.id,
+    @param.path.string('id') id: typeof Persona.prototype.id,
     @requestBody({
       content: {
         'application/json': {
           schema: getModelSchemaRef(Mascota, {
-            title: 'NewMascotaInPropietario',
+            title: 'NewMascotaInPersona',
             exclude: ['id'],
-            optional: ['propietarioId']
+            optional: ['personaId']
           }),
         },
       },
     }) mascota: Omit<Mascota, 'id'>,
   ): Promise<Mascota> {
-    return this.propietarioRepository.mascotas(id).create(mascota);
+    return this.personaRepository.mascotas(id).create(mascota);
   }
 
-  @patch('/propietarios/{id}/mascotas', {
+  @patch('/personas/{id}/mascotas', {
     responses: {
       '200': {
-        description: 'Propietario.Mascota PATCH success count',
+        description: 'Persona.Mascota PATCH success count',
         content: {'application/json': {schema: CountSchema}},
       },
     },
@@ -90,13 +90,13 @@ export class PropietarioMascotaController {
     mascota: Partial<Mascota>,
     @param.query.object('where', getWhereSchemaFor(Mascota)) where?: Where<Mascota>,
   ): Promise<Count> {
-    return this.propietarioRepository.mascotas(id).patch(mascota, where);
+    return this.personaRepository.mascotas(id).patch(mascota, where);
   }
 
-  @del('/propietarios/{id}/mascotas', {
+  @del('/personas/{id}/mascotas', {
     responses: {
       '200': {
-        description: 'Propietario.Mascota DELETE success count',
+        description: 'Persona.Mascota DELETE success count',
         content: {'application/json': {schema: CountSchema}},
       },
     },
@@ -105,6 +105,6 @@ export class PropietarioMascotaController {
     @param.path.string('id') id: string,
     @param.query.object('where', getWhereSchemaFor(Mascota)) where?: Where<Mascota>,
   ): Promise<Count> {
-    return this.propietarioRepository.mascotas(id).delete(where);
+    return this.personaRepository.mascotas(id).delete(where);
   }
 }

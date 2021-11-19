@@ -16,20 +16,20 @@ import {
   requestBody,
 } from '@loopback/rest';
 import {
-  Mascota,
+  Veterinario,
   Solicitud,
 } from '../models';
-import {MascotaRepository} from '../repositories';
+import {VeterinarioRepository} from '../repositories';
 
-export class MascotaSolicitudController {
+export class VeterinarioSolicitudController {
   constructor(
-    @repository(MascotaRepository) protected mascotaRepository: MascotaRepository,
+    @repository(VeterinarioRepository) protected veterinarioRepository: VeterinarioRepository,
   ) { }
 
-  @get('/mascotas/{id}/solicituds', {
+  @get('/veterinarios/{id}/solicituds', {
     responses: {
       '200': {
-        description: 'Array of Mascota has many Solicitud',
+        description: 'Array of Veterinario has many Solicitud',
         content: {
           'application/json': {
             schema: {type: 'array', items: getModelSchemaRef(Solicitud)},
@@ -42,38 +42,38 @@ export class MascotaSolicitudController {
     @param.path.string('id') id: string,
     @param.query.object('filter') filter?: Filter<Solicitud>,
   ): Promise<Solicitud[]> {
-    return this.mascotaRepository.solicitudes(id).find(filter);
+    return this.veterinarioRepository.solicitudes(id).find(filter);
   }
 
-  @post('/mascotas/{id}/solicituds', {
+  @post('/veterinarios/{id}/solicituds', {
     responses: {
       '200': {
-        description: 'Mascota model instance',
+        description: 'Veterinario model instance',
         content: {'application/json': {schema: getModelSchemaRef(Solicitud)}},
       },
     },
   })
   async create(
-    @param.path.string('id') id: typeof Mascota.prototype.id,
+    @param.path.string('id') id: typeof Veterinario.prototype.id,
     @requestBody({
       content: {
         'application/json': {
           schema: getModelSchemaRef(Solicitud, {
-            title: 'NewSolicitudInMascota',
+            title: 'NewSolicitudInVeterinario',
             exclude: ['id'],
-            optional: ['mascotaId']
+            optional: ['veterinarioId']
           }),
         },
       },
     }) solicitud: Omit<Solicitud, 'id'>,
   ): Promise<Solicitud> {
-    return this.mascotaRepository.solicitudes(id).create(solicitud);
+    return this.veterinarioRepository.solicitudes(id).create(solicitud);
   }
 
-  @patch('/mascotas/{id}/solicituds', {
+  @patch('/veterinarios/{id}/solicituds', {
     responses: {
       '200': {
-        description: 'Mascota.Solicitud PATCH success count',
+        description: 'Veterinario.Solicitud PATCH success count',
         content: {'application/json': {schema: CountSchema}},
       },
     },
@@ -90,13 +90,13 @@ export class MascotaSolicitudController {
     solicitud: Partial<Solicitud>,
     @param.query.object('where', getWhereSchemaFor(Solicitud)) where?: Where<Solicitud>,
   ): Promise<Count> {
-    return this.mascotaRepository.solicitudes(id).patch(solicitud, where);
+    return this.veterinarioRepository.solicitudes(id).patch(solicitud, where);
   }
 
-  @del('/mascotas/{id}/solicituds', {
+  @del('/veterinarios/{id}/solicituds', {
     responses: {
       '200': {
-        description: 'Mascota.Solicitud DELETE success count',
+        description: 'Veterinario.Solicitud DELETE success count',
         content: {'application/json': {schema: CountSchema}},
       },
     },
@@ -105,6 +105,6 @@ export class MascotaSolicitudController {
     @param.path.string('id') id: string,
     @param.query.object('where', getWhereSchemaFor(Solicitud)) where?: Where<Solicitud>,
   ): Promise<Count> {
-    return this.mascotaRepository.solicitudes(id).delete(where);
+    return this.veterinarioRepository.solicitudes(id).delete(where);
   }
 }

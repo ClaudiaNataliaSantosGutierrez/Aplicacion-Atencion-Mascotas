@@ -1,9 +1,9 @@
-// export * from './tipoanimal.model';
-export * from './mascota.model';
-export * from './medico.model';
+
+
 export * from './persona.model';
-export * from './propietario.model';
+export * from './veterinario.model';
+export * from './mascota.model';
 export * from './solicitud.model';
 export * from './veterinaria.model';
-export * from './visitas.model';
-
+export * from './visita.model';
+export * from './credenciales.model';

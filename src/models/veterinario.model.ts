@@ -1,9 +1,10 @@
-import {Entity, hasMany, model, property} from '@loopback/repository';
-import {Mascota} from './mascota.model';
+import {belongsTo, Entity, hasMany, model, property} from '@loopback/repository';
 import {Solicitud} from './solicitud.model';
+import {Veterinaria} from './veterinaria.model';
+import {Visita} from './visita.model';
 
 @model()
-export class Persona extends Entity {
+export class Veterinario extends Entity {
   @property({
     type: 'string',
     id: true,
@@ -45,7 +46,13 @@ export class Persona extends Entity {
     type: 'string',
     required: true,
   })
-  direccion: string;
+  especialidad: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  licencia: string;
 
   @property({
     type: 'string',
@@ -53,19 +60,22 @@ export class Persona extends Entity {
   })
   identificacion: string;
 
-  @hasMany(() => Mascota)
-  mascotas: Mascota[];
+  @belongsTo(() => Veterinaria)
+  veterinariaId: string;
+
+  @hasMany(() => Visita)
+  visitas: Visita[];
 
   @hasMany(() => Solicitud)
   solicitudes: Solicitud[];
 
-  constructor(data?: Partial<Persona>) {
+  constructor(data?: Partial<Veterinario>) {
     super(data);
   }
 }
 
-export interface PersonaRelations {
+export interface VeterinarioRelations {
   // describe navigational properties here
 }
 
-export type PersonaWithRelations = Persona & PersonaRelations;
+export type VeterinarioWithRelations = Veterinario & VeterinarioRelations;

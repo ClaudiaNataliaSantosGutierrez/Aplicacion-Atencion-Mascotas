@@ -50,21 +50,26 @@
   ],
   "dependencies": {
     "@loopback/boot": "^3.4.4",
+    "@loopback/cli": "^3.0.0",
     "@loopback/core": "^2.18.0",
     "@loopback/repository": "^3.7.3",
     "@loopback/rest": "^10.1.0",
     "@loopback/rest-explorer": "^3.3.4",
     "@loopback/service-proxy": "^3.2.4",
+    "crypto-js": "^4.1.1",
+    "jsonwebtoken": "^8.5.1",
     "loopback-connector-mongodb": "^5.6.0",
+    "node-fetch": "^2.6.6",
+    "password-generator": "^2.3.2",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
     "@loopback/build": "^7.0.2",
-    "source-map-support": "^0.5.20",
+    "@loopback/eslint-config": "^11.0.2",
     "@loopback/testlab": "^3.4.4",
     "@types/node": "^10.17.60",
-    "@loopback/eslint-config": "^11.0.2",
     "eslint": "^7.32.0",
+    "source-map-support": "^0.5.20",
     "typescript": "~4.4.4"
   }
 }
