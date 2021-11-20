@@ -54,7 +54,7 @@ export class PersonaController {
 
     //Ahora a notificar al usuario via correo electronico
     const email = persona.correo;
-    const asunto = "PetWeb -- Registro de Usuario Completado!";
+    const asunto = "PetFriend -- Registro de Usuario Completado!";
     const mensaje = `Hola ${persona.nombres}, su nombre de usuario es: ${persona.correo} y su contraseña es: ${clave}, perfil de Usuario.`;
     fetch(`${Llaves.urlServicioNotificaciones}/mail?email=${email}&asunto=${asunto}&mensaje=${mensaje}`)
     .then((data:any) => {

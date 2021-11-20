@@ -11,21 +11,23 @@ app = Flask(__name__)
 @app.route('/')
 def inicio():
     test = os.environ.get('Test')
+    #test = os.environ.get('TWILIO_ACCOUNT_SID')
+    #test = os.environ.get('TWILIO_AUTH_TOKEN')
     return test
 
 
 @app.route('/sms')
 def sms():
     try:
-        account_sid = 'TWILIO_ACCOUNT_SID'
-        auth_token = 'TWILIO_AUTH_TOKEN'
+        account_sid = os.environ.get('TWILIO_ACCOUNT_SID')
+        auth_token = os.environ.get('TWILIO_AUTH_TOKEN')
         client = Client(account_sid, auth_token)
         contenido = request.args.get('mensaje')
         destino = request.args.get('telefono')
         message = client.messages \
                         .create(
                             body=contenido,
-                            from_='+12535337198',
+                            from_='+13512477666',
                             to='+57'+destino
                         )
         print(message.sid)
@@ -41,7 +43,7 @@ def mail():
     mensaje = request.args.get('mensaje')
 
     message = Mail(
-        from_email='alejos17@gmail.com',
+        from_email='claudiasantosgutierrez38@gmail.com',
         to_emails=destino,
         subject=asunto,
         html_content=mensaje)

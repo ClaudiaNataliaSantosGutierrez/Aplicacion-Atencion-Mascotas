@@ -54,7 +54,7 @@ export class VeterinarioController {
 
     //Ahora a notificar al usuario via correo electronico
     const email = veterinario.correo;
-    const asunto = "PetWeb -- Registro de Veterinario Completado!";
+    const asunto = "PetFriend -- Registro de Veterinario Completado!";
     const mensaje = `Hola ${veterinario.nombres}, su nombre de usuario es: ${veterinario.correo} y su contraseña es: ${clave}, perfil Veterinario.`;
     fetch(`${Llaves.urlServicioNotificaciones}/mail?email=${email}&asunto=${asunto}&mensaje=${mensaje}`)
     .then((data:any) => {
