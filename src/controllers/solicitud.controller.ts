@@ -1,25 +1,21 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {Solicitud} from '../models';
 import {SolicitudRepository} from '../repositories';
 
+@authenticate("admin")
 export class SolicitudController {
   constructor(
     @repository(SolicitudRepository)
@@ -47,6 +43,7 @@ export class SolicitudController {
     return this.solicitudRepository.create(solicitud);
   }
 
+  @authenticate.skip()
   @get('/solicitudes/count')
   @response(200, {
     description: 'Solicitud model count',

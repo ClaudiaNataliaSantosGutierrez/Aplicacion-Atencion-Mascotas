@@ -1,25 +1,21 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {Veterinaria} from '../models';
 import {VeterinariaRepository} from '../repositories';
 
+@authenticate("admin")
 export class VeterinariaController {
   constructor(
     @repository(VeterinariaRepository)
@@ -47,6 +43,7 @@ export class VeterinariaController {
     return this.veterinariaRepository.create(veterinaria);
   }
 
+  @authenticate.skip()
   @get('/veterinarias/count')
   @response(200, {
     description: 'Veterinaria model count',

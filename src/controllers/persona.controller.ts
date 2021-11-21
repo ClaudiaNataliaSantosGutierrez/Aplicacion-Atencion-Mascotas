@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {service} from '@loopback/core';
 import {
   Count,
@@ -9,15 +10,16 @@ import {
 } from '@loopback/repository';
 import {
   del, get,
-  getModelSchemaRef, param, patch, post, put, requestBody,
+  getModelSchemaRef, HttpErrors, param, patch, post, put, requestBody,
   response
 } from '@loopback/rest';
 import {Llaves} from '../config/llaves';
-import {Persona} from '../models';
+import {Credenciales, Persona} from '../models';
 import {PersonaRepository} from '../repositories';
 import {AutenticacionService} from '../services';
 const fetch = require('node-fetch');
 
+@authenticate("admin")  //Seguridad para toda la clase, exige token
 export class PersonaController {
   constructor(
     @repository(PersonaRepository)
@@ -25,6 +27,48 @@ export class PersonaController {
     @service(AutenticacionService)
     public servicioAutenticacion: AutenticacionService,
   ) {}
+
+    //Metodo de autenticacion y generacion de token para la persona o veterinario y responder con un JSON que tenga el nombre, correo, id y token generado para ese usuario.
+  @authenticate.skip()
+  @post('/login', {
+    responses: {
+      '200': {
+        descripcion: 'Autenticacion de usuarios',
+      }
+    }
+  })
+  async login(
+    @requestBody() credenciales: Credenciales
+  ){
+    const p = await this.servicioAutenticacion.IdentificarPersona(credenciales.usuario, credenciales.clave);
+    const v = await this.servicioAutenticacion.IdentificarVeterinario(credenciales.usuario, credenciales.clave);
+    if(p){  //Si es persona genera token y lo muestra
+      const token = this.servicioAutenticacion.GenerarTokenJWT(p);
+      return {
+        datos: {
+          nombre: p.nombres,
+          correo: p.correo,
+          id: p.id,
+        },
+        tk: token
+      }
+    }else{  //Si es veterinario genera token y lo muestra
+      if(v){
+        const token = this.servicioAutenticacion.GenerarTokenJWTV(v);
+        return {
+          datos: {
+            nombre: v.nombres,
+            correo: v.correo,
+            id: v.id,
+          },
+          tk: token
+        }
+      }else{
+        throw new HttpErrors[401]("Datos Inválidos");
+      }
+    }
+  }
+
 
   @post('/personas')
   @response(200, {
@@ -69,6 +113,7 @@ export class PersonaController {
     return p;
   }
 
+  @authenticate.skip()  //No necesita autenticacion para el conteo
   @get('/personas/count')
   @response(200, {
     description: 'Persona model count',

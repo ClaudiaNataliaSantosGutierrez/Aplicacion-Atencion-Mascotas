@@ -1,25 +1,21 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {Visita} from '../models';
 import {VisitaRepository} from '../repositories';
 
+@authenticate("admin")
 export class VisitaController {
   constructor(
     @repository(VisitaRepository)
@@ -47,6 +43,7 @@ export class VisitaController {
     return this.visitaRepository.create(visita);
   }
 
+  @authenticate.skip()
   @get('/visitas/count')
   @response(200, {
     description: 'Visita model count',

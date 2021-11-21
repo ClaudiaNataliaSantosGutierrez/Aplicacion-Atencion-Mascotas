@@ -1,25 +1,21 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {Mascota} from '../models';
 import {MascotaRepository} from '../repositories';
 
+@authenticate("admin")   //Aplicacion de autenticacion con Token para la clase
 export class MascotaController {
   constructor(
     @repository(MascotaRepository)
@@ -47,6 +43,7 @@ export class MascotaController {
     return this.mascotaRepository.create(mascota);
   }
 
+  @authenticate.skip()  //Unica excepción de seguridad para el conteo de datos no necesita autenticación
   @get('/mascotas/count')
   @response(200, {
     description: 'Mascota model count',

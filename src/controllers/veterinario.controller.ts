@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {service} from '@loopback/core';
 import {
   Count,
@@ -18,6 +19,7 @@ import {VeterinarioRepository} from '../repositories';
 import {AutenticacionService} from '../services';
 const fetch = require('node-fetch');
 
+@authenticate("admin")
 export class VeterinarioController {
   constructor(
     @repository(VeterinarioRepository)
@@ -69,6 +71,7 @@ export class VeterinarioController {
     return v;
   }
 
+  @authenticate.skip()
   @get('/veterinarios/count')
   @response(200, {
     description: 'Veterinario model count',
