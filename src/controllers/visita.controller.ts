@@ -19,8 +19,8 @@ import {VisitaRepository} from '../repositories';
 export class VisitaController {
   constructor(
     @repository(VisitaRepository)
-    public visitaRepository : VisitaRepository,
-  ) {}
+    public visitaRepository: VisitaRepository,
+  ) { }
 
   @post('/visitas')
   @response(200, {
@@ -55,6 +55,7 @@ export class VisitaController {
     return this.visitaRepository.count(where);
   }
 
+  @authenticate.skip()
   @get('/visitas')
   @response(200, {
     description: 'Array of Visita model instances',
